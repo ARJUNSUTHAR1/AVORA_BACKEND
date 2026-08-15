@@ -9,9 +9,25 @@ dotenv.config();
 connectDB();
 
 const app = express();
-console.log(process.env.CLIENT_URL, "clietn url")
+const allowedOrigins = [
+  'http://localhost:5173',
+  'http://localhost:5174',
+  'https://awooraa.com',
+  'https://www.awooraa.com'
+];
+
+if (process.env.CLIENT_URL) {
+  allowedOrigins.push(process.env.CLIENT_URL.replace(/\/+$/, ''));
+}
+
 app.use(cors({
-  origin: process.env.CLIENT_URL || 'https://awooraa.com',
+  origin: function (origin, callback) {
+    if (!origin || allowedOrigins.includes(origin)) {
+      callback(null, true);
+    } else {
+      callback(new Error('Not allowed by CORS'));
+    }
+  },
   credentials: true,
 }));
 
