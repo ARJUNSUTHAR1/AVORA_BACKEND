@@ -16,18 +16,9 @@ const allowedOrigins = [
   'https://www.awooraa.com'
 ];
 
-if (process.env.CLIENT_URL) {
-  allowedOrigins.push(process.env.CLIENT_URL.replace(/\/+$/, ''));
-}
 
 app.use(cors({
-  origin: function (origin, callback) {
-    if (!origin || allowedOrigins.includes(origin)) {
-      callback(null, true);
-    } else {
-      callback(new Error('Not allowed by CORS'));
-    }
-  },
+  origin: "https://awooraa.com",
   credentials: true,
 }));
 
