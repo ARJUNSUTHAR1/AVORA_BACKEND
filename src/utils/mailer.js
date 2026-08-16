@@ -18,7 +18,7 @@ const sendOTPEmail = async (email, otp, context = 'Login') => {
   const actionText = context === 'Login' ? 'access your Awooraa account' : 'verify your contact request';
 
   await transporter.sendMail({
-    from: process.env.EMAIL_FROM || 'Awoora Global Professional Services <info@awooraa.com>',
+    from: `"Awoora Global Professional Services" <${process.env.EMAIL_USER}>`,
     to: email,
     subject: subject,
     html: `

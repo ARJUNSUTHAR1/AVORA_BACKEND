@@ -75,8 +75,8 @@ router.post('/', async (req, res) => {
       port: parseInt(process.env.EMAIL_PORT || '587'),
       secure: parseInt(process.env.EMAIL_PORT) === 465,
       auth: {
-        user: process.env.EMAIL_USER || 'info@awooraa.com',
-        pass: process.env.EMAIL_PASS ? process.env.EMAIL_PASS.replace(/\s/g, '') : undefined
+        user: process.env.OFFICE_EMAIL_USER || 'office@awooraa.com',
+        pass: process.env.OFFICE_EMAIL_PASS ? process.env.OFFICE_EMAIL_PASS.replace(/\s/g, '') : undefined
       },
       tls: {
         rejectUnauthorized: false
@@ -84,7 +84,7 @@ router.post('/', async (req, res) => {
     });
 
     const mailOptions = {
-      from: `"Awoora Global Professional Services" <${process.env.EMAIL_USER || 'info@awooraa.com'}>`,
+      from: `"Awoora Global Professional Services" <${process.env.OFFICE_EMAIL_USER || 'office@awooraa.com'}>`,
       to: process.env.EMAIL_USER || 'info@awooraa.com',
       bcc: process.env.EMAIL_USER || 'info@awooraa.com',
       replyTo: email,
