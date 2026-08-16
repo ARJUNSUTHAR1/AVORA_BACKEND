@@ -1,6 +1,6 @@
 const nodemailer = require('nodemailer');
 
-const sendOTPEmail = async (email, otp) => {
+const sendOTPEmail = async (email, otp, context = 'Login') => {
   const transporter = nodemailer.createTransport({
     host: process.env.EMAIL_HOST,
     port: parseInt(process.env.EMAIL_PORT || '587'),
@@ -14,10 +14,13 @@ const sendOTPEmail = async (email, otp) => {
     },
   });
 
+  const subject = context === 'Login' ? 'Your Awoora Global Professional Services Login OTP' : `Your Awoora Global Professional Services ${context} OTP`;
+  const actionText = context === 'Login' ? 'access your Awooraa account' : 'verify your contact request';
+
   await transporter.sendMail({
     from: process.env.EMAIL_FROM || 'Awoora Global Professional Services <info@awooraa.com>',
     to: email,
-    subject: 'Your Awoora Global Professional Services Login OTP',
+    subject: subject,
     html: `
       <!DOCTYPE html>
       <html>
@@ -34,7 +37,7 @@ const sendOTPEmail = async (email, otp) => {
           <div style="background:#ffffff;border-radius:16px;padding:48px 40px;box-shadow:0 4px 24px rgba(0,0,0,0.06);">
             <h2 style="margin:0 0 8px;font-size:22px;font-weight:600;color:#0F2444;text-align:center;">Verify Your Identity</h2>
             <p style="margin:0 0 40px;font-size:15px;color:#6B7280;text-align:center;line-height:1.6;">
-              Enter the one-time password below to access your Awooraa account.
+              Enter the one-time password below to ${actionText}.
             </p>
             <div style="background:#0F2444;border-radius:12px;padding:28px;text-align:center;margin-bottom:32px;">
               <span style="font-size:42px;font-weight:800;letter-spacing:12px;color:#C9973A;">${otp}</span>
