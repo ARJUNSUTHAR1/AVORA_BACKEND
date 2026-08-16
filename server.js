@@ -18,7 +18,13 @@ const allowedOrigins = [
 
 
 app.use(cors({
-  origin: "https://awooraa.com",
+  origin: function (origin, callback) {
+    if (!origin || allowedOrigins.includes(origin)) {
+      callback(null, true);
+    } else {
+      callback(new Error('Not allowed by CORS'));
+    }
+  },
   credentials: true,
 }));
 
@@ -42,6 +48,10 @@ app.use((err, req, res, next) => {
 });
 
 const PORT = process.env.PORT || 5000;
-app.listen(PORT, () => {
-  console.log(`AWooraa & Co API running on port ${PORT}`);
-});
+if (process.env.NODE_ENV !== 'production') {
+  app.listen(PORT, () => {
+    console.log(`AWooraa & Co API running on port ${PORT}`);
+  });
+}
+
+module.exports = app;
